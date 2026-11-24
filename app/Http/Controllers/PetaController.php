@@ -94,9 +94,9 @@ class PetaController extends Controller
         $pencarian = '%'.$kataKunci.'%';
         $hasil = $this->sekolahDenganProfil()
             ->where(function (Builder $query) use ($pencarian): void {
-                $query->where('nama', 'like', $pencarian)
-                    ->orWhere('npsn', 'like', $pencarian)
-                    ->orWhere('kecamatan', 'like', $pencarian);
+                $query->whereLike('nama', $pencarian)
+                    ->orWhereLike('npsn', $pencarian)
+                    ->orWhereLike('kecamatan', $pencarian);
             })
             ->when($filters['jenjang'] ?? null, fn ($query, $jenjang) => $query->where('jenjang', $jenjang))
             ->orderBy('nama')
