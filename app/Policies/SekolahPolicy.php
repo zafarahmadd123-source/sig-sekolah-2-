@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Policies;
+
+use App\Enums\Role;
+use App\Models\Sekolah;
+use App\Models\User;
+
+class SekolahPolicy
+{
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Sekolah $sekolah): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Sekolah $sekolah): bool
+    {
+        if ($user->role === Role::Dinas) {
+            return true;
+        }
+
+        return $user->role === Role::Sekolah
+            && $user->sekolah_id !== null
+            && (int) $user->sekolah_id === $sekolah->id;
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Sekolah $sekolah): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, Sekolah $sekolah): bool
+    {
+        return false;
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user, Sekolah $sekolah): bool
+    {
+        return false;
+    }
+}
